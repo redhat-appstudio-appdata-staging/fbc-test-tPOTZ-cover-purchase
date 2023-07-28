@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/created-by: application-service
+    app.kubernetes.io/instance: comp-413-fbc-test
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: comp-413-fbc-test
+    app.kubernetes.io/part-of: fbc-test
+  name: comp-413-fbc-test
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: comp-413-fbc-test
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/instance: comp-413-fbc-test
+    spec:
+      containers:
+      - imagePullPolicy: Always
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 50051
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        name: container-image
+        ports:
+        - containerPort: 50051
+        readinessProbe:
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          tcpSocket:
+            port: 50051
+        resources:
+          limits:
+            cpu: "1"
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 512Mi
+status: {}
